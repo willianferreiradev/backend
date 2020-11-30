@@ -18,12 +18,14 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('cpf_cnpj')->unique();
-            $table->string('phone')->unique();
+            $table->string('phone')->unique()->nullable();
+            $table->boolean('active')->default(false);
             $table->enum('type', ['admin', 'transporter', 'driver', 'client']);
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('activation_token');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

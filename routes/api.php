@@ -19,10 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('auth')->group(function () {
-    Route::post('register', 'App\Http\Controllers\AuthController@register');
-    Route::post('login', 'App\Http\Controllers\AuthController@generalLogin');
+    Route::post('signup', 'App\Http\Controllers\AuthController@signup');
+    Route::post('login', 'App\Http\Controllers\AuthController@login');
     Route::post('logout', 'App\Http\Controllers\AuthController@logout');
-
-    // Route::post('logout', 'App\Http\Controllers\AuthController@logout');
-    // Route::post('logout', 'App\Http\Controllers\AuthController@logout');
+    Route::get('signup/activate/{token}', 'App\Http\Controllers\AuthController@signupActivate');
 });
+
+Route::apiResource('users', 'App\Http\Controllers\UserController');

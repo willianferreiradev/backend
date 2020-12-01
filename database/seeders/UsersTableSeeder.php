@@ -17,10 +17,10 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name' => 'Franklin',
-            'email' => 'franklin@gmail.com',
-            'password' => '123456',
-            'cpf_cnpj' => '11111111111',
-            'phone' => '11982245700',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('123456'),
+            'cpf_cnpj' => '22222222222',
+            'phone' => '11582245700',
             'type' => 'admin',
             'active' => true,
             'activation_token' => Str::random(60),

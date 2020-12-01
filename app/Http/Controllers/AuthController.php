@@ -19,9 +19,6 @@ class AuthController extends Controller
         'phone' => 'string',
     ];
 
-    /**
-     *
-     */
     public function signup(Request $request)
     {
         $request->validate($this->fieldsValidate, [
@@ -64,25 +61,14 @@ class AuthController extends Controller
         ]);
     }
 
-    public function generalLogin(Request $request)
-    {
-    }
-
-    public function clientLogin(Request $request)
-    {
-    }
-
-    public function driverLogin(Request $request)
-    {
-    }
-
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-        $credentials = request(['email', 'password']);
+        if ($request['type_user'] === 'admin' || $request['type_user'] === 'client') {
+            $credentials = request(['email', 'password']);
+        } else {
+            $credentials = request(['cpf_cnpj', 'password']);
+        }
+
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Unauthorized'
@@ -95,12 +81,15 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         }
         $token->save();
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
-        ]);
+        // $user['access_token'] = [
+        //     'access_token' => $tokenResult->accessToken,
+        //     'token_type' => 'Bearer',
+        //     'expires_at' => Carbon::parse(
+        //         $tokenResult->token->expires_at
+        //     )->toDateTimeString()
+        // ];
+
+        $user['access_token'] = $tokenResult->accessToken;
+        return response()->json($user);
     }
 }

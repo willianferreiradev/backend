@@ -26,3 +26,4 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::apiResource('users', 'App\Http\Controllers\UserController');
+Route::get('dashboard', 'App\Http\Controllers\DashboardController@index');

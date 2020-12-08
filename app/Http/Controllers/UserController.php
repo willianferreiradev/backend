@@ -15,10 +15,17 @@ class UserController extends Controller
     public function index()
     {
         $users = new User;
+        if (request()->search) {
+            $search = '%' . request()->search . '%';
+            $users = $users->where('name', 'like', $search)
+                ->orWhere('email', 'like', $search)
+                ->orWhere('phone', 'like', $search);
+        }
+
         if (request()->type) {
             $users = $users->where('type', request()->type);
         }
-        $users = $users->paginate(20);
+        $users = $users->paginate(request()->perPage ?? 10);
         return response()->json($users);
     }
 
